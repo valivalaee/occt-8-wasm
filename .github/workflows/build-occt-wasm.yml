@@ -6,15 +6,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout OCCT WASM source
         uses: actions/checkout@v5
         with:
           repository: andymai/occt-wasm
+          ref: main
           path: occt-wasm
           submodules: recursive
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -23,7 +25,11 @@ jobs:
 
       - name: Build Docker image
         working-directory: occt-wasm
-        run: npm install && npm run docker:build
+        run: |
+          git submodule status
+          test -f occt/CMakeLists.txt
+          npm install
+          npm run docker:build
 
       - name: Build WASM distribution
         working-directory: occt-wasm
@@ -35,3 +41,4 @@ jobs:
           name: occt-8.0.1-wasm-dist
           path: occt-wasm/dist/
           if-no-files-found: error
+
