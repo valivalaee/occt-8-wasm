@@ -1,3 +1,4 @@
+
 name: Build OCCT 8.0.1 WebAssembly
 
 on:
@@ -9,13 +10,14 @@ jobs:
 
     steps:
       - name: Checkout OCCT WASM source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: andymai/occt-wasm
           path: occt-wasm
+          submodules: recursive
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
